@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans text-gray-800 antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-200 inline-flex items-center justify-center;
+  }
+  
+  .btn-primary-clinic {
+    @apply bg-clinic-primary text-white hover:bg-clinic-dark;
+  }
+  
+  .btn-secondary-clinic {
+    @apply bg-clinic-secondary text-white hover:bg-clinic-primary;
+  }
+  
+  .btn-primary-store {
+    @apply bg-store-primary text-white hover:bg-store-secondary;
+  }
+  
+  .btn-secondary-store {
+    @apply bg-store-accent text-white hover:bg-store-dark;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-200 hover:shadow-lg;
+  }
+  
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50;
+  }
+  
+  .input-clinic {
+    @apply focus:ring-clinic-primary;
+  }
+  
+  .input-store {
+    @apply focus:ring-store-primary;
+  }
+  
+  .container-custom {
+    @apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
+  }
+  
+  .section {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+}

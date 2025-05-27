@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { Menu, X, Building2, Phone } from 'lucide-react';
+import { Menu, X, Building2, Phone, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const ClinicLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -18,15 +20,15 @@ const ClinicLayout = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-clinic-light">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
+      <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
         <div className="container-custom py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <NavLink to="/clinic" className="flex items-center space-x-2">
               <Building2 className="h-8 w-8 text-clinic-primary" />
-              <span className="text-xl font-bold text-clinic-dark">Tog' Shifo</span>
+              <span className="text-xl font-bold text-clinic-dark dark:text-white">Tog' Shifo</span>
             </NavLink>
 
             {/* Desktop Navigation */}
@@ -37,7 +39,7 @@ const ClinicLayout = () => {
                   to={item.path}
                   className={({ isActive }) =>
                     `text-sm font-medium hover:text-clinic-primary transition-colors ${
-                      isActive ? 'text-clinic-primary border-b-2 border-clinic-primary' : 'text-gray-700'
+                      isActive ? 'text-clinic-primary border-b-2 border-clinic-primary' : 'text-gray-700 dark:text-gray-300'
                     }`
                   }
                   end={item.path === '/clinic'}
@@ -52,22 +54,36 @@ const ClinicLayout = () => {
                 <Phone className="h-4 w-4" />
                 <span>+998 90 123 45 67</span>
               </a>
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-clinic-primary dark:hover:text-clinic-primary"
+              >
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
             </nav>
 
             {/* Mobile Menu Button */}
-            <button
-              className="md:hidden text-gray-700 hover:text-clinic-primary"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            <div className="md:hidden flex items-center space-x-4">
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-clinic-primary dark:hover:text-clinic-primary"
+              >
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
+              <button
+                className="text-gray-700 dark:text-gray-300 hover:text-clinic-primary dark:hover:text-clinic-primary"
+                onClick={toggleMenu}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden bg-white py-4 px-6 border-t border-gray-100 animate-slide-down">
+          <nav className="md:hidden bg-white dark:bg-gray-800 py-4 px-6 border-t border-gray-100 dark:border-gray-700 animate-slide-down">
             <ul className="space-y-4">
               {navItems.map((item) => (
                 <li key={item.path}>
@@ -75,7 +91,7 @@ const ClinicLayout = () => {
                     to={item.path}
                     className={({ isActive }) =>
                       `block py-2 text-base font-medium hover:text-clinic-primary transition-colors ${
-                        isActive ? 'text-clinic-primary' : 'text-gray-700'
+                        isActive ? 'text-clinic-primary' : 'text-gray-700 dark:text-gray-300'
                       }`
                     }
                     onClick={() => setIsMenuOpen(false)}
@@ -105,7 +121,7 @@ const ClinicLayout = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-clinic-dark text-white py-10">
+      <footer className="bg-clinic-dark text-white dark:bg-gray-800 py-10">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>

@@ -6,14 +6,18 @@ import {
   ShoppingBag, 
   Search, 
   ShoppingCart, 
-  User 
+  User,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const StoreLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { cartItems } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -39,15 +43,15 @@ const StoreLayout = () => {
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
+      <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
         <div className="container-custom py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <NavLink to="/store" className="flex items-center space-x-2">
               <ShoppingBag className="h-8 w-8 text-store-primary" />
-              <span className="text-xl font-bold text-store-dark">OnlineMarket</span>
+              <span className="text-xl font-bold text-store-dark dark:text-white">OnlineMarket</span>
             </NavLink>
 
             {/* Search Bar - Desktop */}
@@ -56,7 +60,7 @@ const StoreLayout = () => {
                 <input
                   type="text"
                   placeholder="Qidirish..."
-                  className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-store-primary focus:ring-opacity-50"
+                  className="w-full py-2 pl-10 pr-4 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-store-primary focus:ring-opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -71,7 +75,7 @@ const StoreLayout = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-4">
-              <Link to="/store/cart" className="relative p-2 text-gray-700 hover:text-store-primary">
+              <Link to="/store/cart" className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-store-primary">
                 <ShoppingCart className="h-6 w-6" />
                 {cartItemCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-store-accent text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -79,19 +83,33 @@ const StoreLayout = () => {
                   </span>
                 )}
               </Link>
-              <Link to="/store/profile" className="p-2 text-gray-700 hover:text-store-primary">
+              <Link to="/store/profile" className="p-2 text-gray-700 dark:text-gray-300 hover:text-store-primary">
                 <User className="h-6 w-6" />
               </Link>
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-store-primary"
+              >
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
             </nav>
 
             {/* Mobile Menu Button */}
-            <button
-              className="md:hidden text-gray-700 hover:text-store-primary"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            <div className="md:hidden flex items-center space-x-2">
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-store-primary"
+              >
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
+              <button
+                className="text-gray-700 dark:text-gray-300 hover:text-store-primary"
+                onClick={toggleMenu}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
 
           {/* Categories Navigation - Desktop */}
@@ -102,7 +120,7 @@ const StoreLayout = () => {
                 to={item.path}
                 className={({ isActive }) =>
                   `text-sm font-medium hover:text-store-primary transition-colors ${
-                    isActive ? 'text-store-primary border-b-2 border-store-primary' : 'text-gray-700'
+                    isActive ? 'text-store-primary border-b-2 border-store-primary' : 'text-gray-700 dark:text-gray-300'
                   }`
                 }
                 end={item.path === '/store'}
@@ -115,13 +133,13 @@ const StoreLayout = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white py-4 px-6 border-t border-gray-100 animate-slide-down">
+          <div className="md:hidden bg-white dark:bg-gray-800 py-4 px-6 border-t border-gray-100 dark:border-gray-700 animate-slide-down">
             {/* Search Bar - Mobile */}
             <form onSubmit={handleSearch} className="relative mb-4">
               <input
                 type="text"
                 placeholder="Qidirish..."
-                className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-store-primary focus:ring-opacity-50"
+                className="w-full py-2 pl-10 pr-4 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-store-primary focus:ring-opacity-50 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -141,7 +159,7 @@ const StoreLayout = () => {
                     to={item.path}
                     className={({ isActive }) =>
                       `block py-2 text-base font-medium hover:text-store-primary transition-colors ${
-                        isActive ? 'text-store-primary' : 'text-gray-700'
+                        isActive ? 'text-store-primary' : 'text-gray-700 dark:text-gray-300'
                       }`
                     }
                     onClick={() => setIsMenuOpen(false)}
@@ -151,11 +169,11 @@ const StoreLayout = () => {
                   </NavLink>
                 </li>
               ))}
-              <li className="border-t border-gray-100 pt-4 mt-4">
+              <li className="border-t border-gray-100 dark:border-gray-700 pt-4 mt-4">
                 <div className="flex space-x-4">
                   <Link
                     to="/store/cart"
-                    className="flex items-center py-2 text-base font-medium text-gray-700 hover:text-store-primary"
+                    className="flex items-center py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-store-primary"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <ShoppingCart className="h-5 w-5 mr-2" />
@@ -168,7 +186,7 @@ const StoreLayout = () => {
                   </Link>
                   <Link
                     to="/store/profile"
-                    className="flex items-center py-2 text-base font-medium text-gray-700 hover:text-store-primary"
+                    className="flex items-center py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-store-primary"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <User className="h-5 w-5 mr-2" />
@@ -187,7 +205,7 @@ const StoreLayout = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-store-dark text-white py-10">
+      <footer className="bg-store-dark dark:bg-gray-800 text-white py-10">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -274,7 +292,7 @@ const StoreLayout = () => {
                   </a>
                   <a href="#" className="text-white hover:text-store-accent transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                      <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397  4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                     </svg>
                   </a>
                 </div>
